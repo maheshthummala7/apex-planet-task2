@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Portfolio Page</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Navigation - Flexbox */
+        .nav-container {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: white;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #f1f1f1;
+            transform: translateY(-2px);
+        }
+
+        /* Main Layout - CSS Grid */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+            color: #4a4a4a;
+        }
+
+        h2 {
+            margin-bottom: 1.5rem;
+            color: #6e8efb;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        /* Contact Form Styles */
+        .contact-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-control {
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #6e8efb;
+            box-shadow: 0 0 0 3px rgba(110, 142, 251, 0.2);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            height: 1rem;
+        }
+
+        /* Todo List Styles */
+        .todo-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .todo-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .todo-form input {
+            flex: 1;
+        }
+
+        .todo-list {
+            list-style: none;
+        }
+
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .todo-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .todo-item.completed {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .todo-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #555;
+            transition: all 0.2s ease;
+        }
+
+        .todo-actions button:hover {
+            color: #6e8efb;
+        }
+
+        /* Responsive Styles */
+        @media (min-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-form {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-group-message {
+                grid-column: span 2;
+            }
+
+            .btn-submit {
+                grid-column: span 2;
+            }
+        }
+
+        /* Success Message */
+        .success-message {
+            color: #27ae60;
+            background-color: #e8f5e9;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="nav-container">
+        <nav>
+            <div class="logo">Portfolio</div>
+            <ul class="nav-links">
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#todo">Todo List</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Contact Form Section -->
+        <section id="contact" class="section">
+            <h2>Contact Me</h2>
+            <form id="contactForm" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" class="form-control" placeholder="Enter your full name">
+                    <span id="nameError" class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" class="form-control" placeholder="Enter your email address">
+                    <span id="emailError" class="error-message"></span>
+                </div>
+                <div class="form-group form-group-message">
+                    <label for="message">Message *</label>
+                    <textarea id="message" class="form-control" rows="5" placeholder="Enter your message"></textarea>
+                    <span id="messageError" class="error-message"></span>
+                </div>
+                <button type="submit" class="btn btn-submit">Send Message</button>
+                <div id="formSuccess" class="success-message">
+                    Thank you! Your message has been sent successfully.
+                </div>
+            </form>
+        </section>
+
+        <!-- Todo List Section -->
+        <section id="todo" class="section">
+            <h2>Todo List</h2>
+            <div class="todo-container">
+                <form id="todoForm" class="todo-form">
+                    <input type="text" id="todoInput" class="form-control" placeholder="Add a new task...">
+                    <button type="submit" class="btn">Add</button>
+                </form>
+                <ul id="todoList" class="todo-list">
+                    <!-- Todo items will be added here dynamically -->
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Form Validation for Contact Form
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Reset error messages
+            document.getElementById('nameError').textContent = '';
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('messageError').textContent = '';
+            
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+            
+            let isValid = true;
+            
+            // Name validation
+            if (name === '') {
+                document.getElementById('nameError').textContent = 'Name is required';
+                isValid = false;
+            }
+            
+            // Email validation
+            if (email === '') {
+                document.getElementById('emailError').textContent = 'Email is required';
+                isValid = false;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email';
+                isValid = false;
+            }
+            
+            // Message validation
+            if (message === '') {
+                document.getElementById('messageError').textContent = 'Message is required';
+                isValid = false;
+            } else if (message.length < 10) {
+                document.getElementById('messageError').textContent = 'Message should be at least 10 characters';
+                isValid = false;
+            }
+            
+            // If form is valid, show success message
+            if (isValid) {
+                document.getElementById('formSuccess').style.display = 'block';
+                this.reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById('formSuccess').style.display = 'none';
+                }, 5000);
+            }
+        });
+        
+        // Todo List Functionality
+        document.getElementById('todoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const input = document.getElementById('todoInput');
+            const task = input.value.trim();
+            
+            if (task !== '') {
+                addTodo(task);
+                input.value = '';
+                input.focus();
+            }
+        });
+        
+        function addTodo(task) {
+            const todoList = document.getElementById('todoList');
+            
+            const li = document.createElement('li');
+            li.className = 'todo-item';
+            
+            const taskSpan = document.createElement('span');
+            taskSpan.textContent = task;
+            
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'todo-actions';
+            
+            const completeBtn = document.createElement('button');
+            completeBtn.innerHTML = '✓';
+            completeBtn.addEventListener('click', function() {
+                li.classList.toggle('completed');
+            });
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.innerHTML = '✕';
+            deleteBtn.addEventListener('click', function() {
+                li.remove();
+            });
+            
+            actionsDiv.appendChild(completeBtn);
+            actionsDiv.appendChild(deleteBtn);
+            
+            li.appendChild(taskSpan);
+            li.appendChild(actionsDiv);
+            
+            todoList.appendChild(li);
+        }
+    </script>
+</body>
+</html>
